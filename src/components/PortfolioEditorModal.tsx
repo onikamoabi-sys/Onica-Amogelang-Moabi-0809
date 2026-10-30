@@ -1292,26 +1292,37 @@ export const PortfolioEditorModal: React.FC = () => {
               <div className="p-5 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-3">
                 <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-amber-400">
                   <Download className="w-4 h-4" />
-                  <span>Download Backup JSON</span>
+                  <span>Download Backup & GitHub Sync</span>
                 </div>
-                <p className="text-xs text-zinc-400">
-                  Export your entire portfolio content as a single JSON file to keep an offline copy or restore anytime.
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Export your entire portfolio content as a single JSON file. You can keep an offline copy, restore it anytime, or paste it in the chat so your exact text and custom changes are permanently written into the codebase file (<code className="text-amber-400">src/data/defaultPortfolioData.ts</code>) before pushing to GitHub.
                 </p>
-                <button
-                  onClick={() => {
-                    const blob = new Blob([exportDataJson()], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `onica_moabi_portfolio_backup_${new Date().toISOString().slice(0, 10)}.json`;
-                    a.click();
-                    addToast('Portfolio backup file downloaded', 'success');
-                  }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-medium text-xs tracking-wide transition cursor-pointer"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Download Backup JSON File</span>
-                </button>
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <button
+                    onClick={() => {
+                      const blob = new Blob([exportDataJson()], { type: 'application/json' });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `onica_moabi_portfolio_backup_${new Date().toISOString().slice(0, 10)}.json`;
+                      a.click();
+                      addToast('Portfolio backup file downloaded', 'success');
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-medium text-xs tracking-wide transition cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download Backup JSON File</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(exportDataJson());
+                      addToast('Portfolio JSON copied to clipboard! Paste it here in chat to bake into GitHub files.', 'success');
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 font-medium text-xs tracking-wide transition cursor-pointer"
+                  >
+                    <span>Copy JSON to Clipboard</span>
+                  </button>
+                </div>
               </div>
 
               <div className="p-5 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-3">
